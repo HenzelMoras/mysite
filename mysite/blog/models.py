@@ -19,9 +19,10 @@ class Post(models.Model):
     body = models.TextField()
     publish = models.DateTimeField(default=timezone.now)  # default published time is set to now
     created = models.DateTimeField(auto_now_add=True)   # created object is always set to now
-    updated = models.CharField(max_length=10,
-                               choices=STATUS_CHOICES,   # updated with choices
-                               default='draft')
+    updated = models.DateTimeField(auto_now=True)
+    status = models.CharField(max_length=10,
+                               choices=STATUS_CHOICES,   # status with choices
+                              default='draft')
 
     class Meta:
         ordering = ('-publish',)  # reverse ordering filtered using publish object for displaying the latest posts
