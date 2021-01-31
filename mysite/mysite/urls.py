@@ -18,5 +18,5 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('blog/', include('blog.urls',namespace='blog'))
+    path('blog/', include('blog.urls',namespace='blog'))  # include and redirects any requests to blog/ to blog.urls
 ]
