@@ -24,7 +24,7 @@ class Post(models.Model):
                                default='draft')
 
     class Meta:
-        ordering = ('-publish',)  # reverse ordering filtered using publish object for displaying the latest posts first
+        ordering = ('-publish',)  # reverse ordering filtered using publish object for displaying the latest posts
 
     def __str__(self):
         return self.title                           
