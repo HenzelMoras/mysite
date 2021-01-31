@@ -3,6 +3,12 @@ from django.utils import timezone  # for time related objects like publish, crea
 from django.contrib.auth.models import User  # to be used to link the users to author using foreign key 
 # Create your models here.
 
+class PublishedManager(models.Manager):
+    def get_queryset(self):
+        return super(PublishedManager,
+                     self).get_queryset()\
+                          .filter(status='published')
+
 
 class Post(models.Model):
     STATUS_CHOICES =(
@@ -23,6 +29,9 @@ class Post(models.Model):
     status = models.CharField(max_length=10,
                                choices=STATUS_CHOICES,   # status with choices
                               default='draft')
+
+    objects = models.Manager()
+    published = PublishedManager()
 
     class Meta:
         ordering = ('-publish',)  # reverse ordering filtered using publish object for displaying the latest posts
