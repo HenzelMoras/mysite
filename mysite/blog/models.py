@@ -7,7 +7,7 @@ class PublishedManager(models.Manager):
     def get_queryset(self):
         return super(PublishedManager,
                      self).get_queryset()\
-                          .filter(status='published')
+                          .filter(status='published')  # get Posts with published status
 
 
 class Post(models.Model):
@@ -37,4 +37,4 @@ class Post(models.Model):
         ordering = ('-publish',)  # reverse ordering filtered using publish object for displaying the latest posts
 
     def __str__(self):
-        return self.title                           
+        return self.title                          
