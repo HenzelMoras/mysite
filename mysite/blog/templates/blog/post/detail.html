@@ -1,4 +1,5 @@
 {% extends "blog/base.html" %}
+{% load markdown_extras %}
  
 {% block title %}{{ post.title }}{% endblock %}
  
@@ -7,5 +8,5 @@
   <p class="date">
     Published {{ post.publish }} by {{ post.author }}
   </p>
-  {{ post.body|linebreaks }}
+  {{ post.body|markdown|safe }}
 {% endblock %}
