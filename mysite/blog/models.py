@@ -1,8 +1,11 @@
 from django.db import models
-from django.utils import timezone  # for time related objects like publish, created, updated
-from django.contrib.auth.models import User  # to be used to link the users to author using foreign key 
+# for time related objects like publish, created, updated
+from django.utils import timezone
+# to be used to link the users to author using foreign key
+from django.contrib.auth.models import User
 from django.urls import reverse
 # Create your models here.
+
 
 class PublishedManager(models.Manager):
     def get_queryset(self):
@@ -12,9 +15,9 @@ class PublishedManager(models.Manager):
 
 
 class Post(models.Model):
-    STATUS_CHOICES =(
-        ('draft','Draft'),
-        ('published','Published'),  # Choices used for 'updated' object
+    STATUS_CHOICES = (
+        ('draft', 'Draft'),
+        ('published', 'Published'),  # Choices used for 'updated' object
     )
     title = models.CharField(max_length=250)
     slug = models.SlugField(max_length=250,
@@ -24,18 +27,22 @@ class Post(models.Model):
                                related_name='blog_posts')
 
     body = models.TextField()
-    publish = models.DateTimeField(default=timezone.now)  # default published time is set to now
-    created = models.DateTimeField(auto_now_add=True)   # created object is always set to now
+    # default published time is set to now
+    publish = models.DateTimeField(default=timezone.now)
+    # created object is always set to now
+    created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     status = models.CharField(max_length=10,
-                               choices=STATUS_CHOICES,   # status with choices
+                              choices=STATUS_CHOICES,   # status with choices
                               default='draft')
 
     objects = models.Manager()
     published = PublishedManager()
 
     class Meta:
-        ordering = ('-publish',)  # reverse ordering filtered using publish object for displaying the latest posts
+        # reverse ordering filtered using publish object for
+        ordering = ('-publish',)
+        # displaying the latest posts
 
     def get_absolute_url(self):
         return reverse('blog:post_detail',
@@ -45,4 +52,22 @@ class Post(models.Model):
                              self.slug])
 
     def __str__(self):
-        return self.title                          
+        return self.title
+
+
+class Comment(models.Model):
+    post = models.ForeignKey(Post,
+                             on_delete=models.CASCADE,
+                             related_name='comments')
+    name = models.CharField(max_length=80)
+    email = models.EmailField()
+    body = models.TextField()
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    active = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ('created',)
+
+    def __str__(self):
+        return f'Comment by {self.name} on {self.post}'

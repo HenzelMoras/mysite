@@ -1,5 +1,5 @@
 from django.contrib import admin
-from . models import Post  # added Post model to regiter in Django admin site 
+from . models import Post, Comment  # added Post model to regiter in Django admin site 
 
 # Register your models here.
 
@@ -14,3 +14,10 @@ class PostAdmin(admin.ModelAdmin):
     raw_id_fields = ('author',)     # id field for search bar using author foriegn key
     date_hierarchy = 'publish'     
     ordering = ('status', 'publish')
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ('name', 'email', 'post', 'created', 'active')
+    list_filter = ('active', 'created', 'updated')
+    search_fields = ('name', 'email', 'body')
+    
