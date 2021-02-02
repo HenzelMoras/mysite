@@ -4,6 +4,7 @@ from django.utils import timezone
 # to be used to link the users to author using foreign key
 from django.contrib.auth.models import User
 from django.urls import reverse
+from taggit.managers import TaggableManager
 # Create your models here.
 
 
@@ -36,6 +37,8 @@ class Post(models.Model):
                               choices=STATUS_CHOICES,   # status with choices
                               default='draft')
 
+    # List of Managers
+    tags = TaggableManager()
     objects = models.Manager()
     published = PublishedManager()
 
